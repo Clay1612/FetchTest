@@ -62,7 +62,7 @@ sendPostRequest('POST', requestURL, body)
 
 //Template functions
 function createCard() {
-  return cardTemplate;
+  return cardTemplate;     //Эта функция особо то и не нужна, не до конца видимо понял твою задумку, обсудим.
 }
 
 function addElement() {
