@@ -6,64 +6,85 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-var UsersURL = 'https://jsonplaceholder.typicode.com/users';
-var PhotoURL = 'https://jsonplaceholder.typicode.com/photos';
-var CommentsURL = 'https://jsonplaceholder.typicode.com/comments';
+var requestURL = 'https://jsonplaceholder.typicode.com/comments';
 var titleContent = document.querySelectorAll('.card-title');
-var imageContent = document.querySelectorAll('.card-img-top');
-var cardContent = document.querySelectorAll('.card-text'); //Fetch Function
+var subTutleContent = document.querySelectorAll('.card-subtitle');
+var cardContent = document.querySelectorAll('.card-text');
+var body = {
+  title: 'Lorem ipsum dolor sit amet',
+  subtitle: 'qwertyui@gmail.com',
+  text: 'consectetur adipisicing elit'
+}; // RequestFunction
+//GET
 
-function sendRequest(method, url) {
-  var body = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+function sendGetRequest(url) {
   return fetch(url).then(function (response) {
     return response.json();
   });
+} //Post
+
+
+function sendPostRequest(method, url) {
+  var body = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+  var headers = {
+    'Content-Type': 'application/json'
+  };
+  return fetch(url, {
+    method: method,
+    body: JSON.stringify(body),
+    headers: headers
+  }).then(function (response) {
+    return response.json();
+  });
 } //Requests
+//GET
 
 
-sendRequest('GET', UsersURL).then(function (data) {
+sendGetRequest(requestURL).then(function (data) {
   var _iterator = _createForOfIteratorHelper(titleContent),
       _step;
 
   try {
     for (_iterator.s(); !(_step = _iterator.n()).done;) {
       var i = _step.value;
-      i.innerHTML = data[0].name; //**FIX ME */
+      i.innerHTML = data[0].name;
     }
   } catch (err) {
     _iterator.e(err);
   } finally {
     _iterator.f();
   }
-});
-sendRequest('GET', PhotoURL).then(function (data) {
-  var _iterator2 = _createForOfIteratorHelper(imageContent),
+
+  var _iterator2 = _createForOfIteratorHelper(subTutleContent),
       _step2;
 
   try {
     for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-      var i = _step2.value;
-      i.src = data[0].url; //**FIX ME */
+      var _i = _step2.value;
+      _i.innerHTML = data[0].email;
     }
   } catch (err) {
     _iterator2.e(err);
   } finally {
     _iterator2.f();
   }
-});
-sendRequest('GET', CommentsURL).then(function (data) {
+
   var _iterator3 = _createForOfIteratorHelper(cardContent),
       _step3;
 
   try {
     for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-      var i = _step3.value;
-      i.innerHTML = data[0].body; //**FIX ME */
+      var _i2 = _step3.value;
+      _i2.innerHTML = data[0].body;
     }
   } catch (err) {
     _iterator3.e(err);
   } finally {
     _iterator3.f();
   }
+}); //POST
+
+sendPostRequest('POST', requestURL, body).then(function (data) {
+  return console.log(data);
 });
 //# sourceMappingURL=index.js.map

@@ -1,40 +1,60 @@
 'use strict'
+
 //Variables
-const UsersURL = 'https://jsonplaceholder.typicode.com/users';
-const PhotoURL = 'https://jsonplaceholder.typicode.com/photos';
-const CommentsURL = 'https://jsonplaceholder.typicode.com/comments';
+const requestURL = 'https://jsonplaceholder.typicode.com/comments';
 
 let titleContent = document.querySelectorAll('.card-title');
-let imageContent = document.querySelectorAll('.card-img-top');
+let subTutleContent = document.querySelectorAll('.card-subtitle');
 let cardContent = document.querySelectorAll('.card-text');
 
-
-//Fetch Function
-function sendRequest(method, url, body = null) {
-   return fetch(url).then(response => {
-     return response.json();
-   })
+let body = {
+  title: 'Lorem ipsum dolor sit amet',
+  subtitle: 'qwertyui@gmail.com',
+  text: 'consectetur adipisicing elit',
 }
 
+// RequestFunction
+//GET
+function sendGetRequest(url) {
+  return fetch(url)
+    .then(response => {
+      return response.json()
+    })
+}
+
+//Post
+function sendPostRequest(method, url, body = null) {
+  let headers = {
+    'Content-Type': 'application/json',
+  }
+
+  return fetch(url, {
+    method: method,
+    body: JSON.stringify(body),
+    headers: headers
+  })
+  .then(response => {
+    return response.json()
+  })
+}
 
 //Requests
-sendRequest('GET', UsersURL)
+//GET
+sendGetRequest(requestURL)
   .then(data => {
     for(let i of titleContent) {
-      i.innerHTML = data[0].name; //**FIX ME */
+      i.innerHTML = data[0].name;
     }
-  })
 
-sendRequest('GET', PhotoURL)
-  .then(data => {
-    for(let i of imageContent) {
-      i.src = data[0].url; //**FIX ME */
+    for(let i of subTutleContent) {
+      i.innerHTML = data[0].email;
     }
-  })
 
-sendRequest('GET', CommentsURL)
-  .then(data => {
     for(let i of cardContent) {
-      i.innerHTML = data[0].body; //**FIX ME */
+      i.innerHTML = data[0].body;
     }
   })
+
+//POST
+sendPostRequest('POST', requestURL, body)
+  .then(data => console.log(data));
