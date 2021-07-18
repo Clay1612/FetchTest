@@ -1,39 +1,14 @@
 'use strict'; //Request URL
 
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+var requestURL = 'https://jsonplaceholder.typicode.com/posts'; //Variables
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-var requestURL = 'https://jsonplaceholder.typicode.com/comments';
-var body = {
-  title: 'Lorem ipsum dolor sit amet',
-  subtitle: 'qwertyui@gmail.com',
-  text: 'consectetur adipisicing elit'
-}; //Template variables
-
-var cardTemplate = document.querySelector('.card-template');
-var layoutRow = document.querySelector('.row'); // RequestFunction
-//GET
+var layoutRow = document.querySelector('.row');
+var viewMoreButton = document.querySelector('.btn-secondary');
+var rememberCount = 0;
+var counter = 6; //GET
 
 function sendGetRequest(url) {
   return fetch(url).then(function (response) {
-    return response.json();
-  });
-} //Post
-
-
-function sendPostRequest(method, url) {
-  var body = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-  var headers = {
-    'Content-Type': 'application/json'
-  };
-  return fetch(url, {
-    method: method,
-    body: JSON.stringify(body),
-    headers: headers
-  }).then(function (response) {
     return response.json();
   });
 } //Requests
@@ -41,71 +16,45 @@ function sendPostRequest(method, url) {
 
 
 sendGetRequest(requestURL).then(function (data) {
-  var _iterator = _createForOfIteratorHelper(titleContent),
-      _step;
-
-  try {
-    for (_iterator.s(); !(_step = _iterator.n()).done;) {
-      var i = _step.value;
-      i.innerHTML = data[0].name; //** FIX ME */
-    }
-  } catch (err) {
-    _iterator.e(err);
-  } finally {
-    _iterator.f();
-  }
-
-  var _iterator2 = _createForOfIteratorHelper(subTutleContent),
-      _step2;
-
-  try {
-    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-      var _i = _step2.value;
-      _i.innerHTML = data[0].email; //** FIX ME */
-    }
-  } catch (err) {
-    _iterator2.e(err);
-  } finally {
-    _iterator2.f();
-  }
-
-  var _iterator3 = _createForOfIteratorHelper(cardContent),
-      _step3;
-
-  try {
-    for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-      var _i2 = _step3.value;
-      _i2.innerHTML = data[0].body; //** FIX ME */
-    }
-  } catch (err) {
-    _iterator3.e(err);
-  } finally {
-    _iterator3.f();
-  }
-}); //POST
-
-sendPostRequest('POST', requestURL, body).then(function (data) {
-  return console.log(data);
+  addElements(data, 6);
 }); //Template functions
 
-function createCard() {
-  return cardTemplate; //Эта функция особо то и не нужна, не до конца видимо понял твою задумку, обсудим.
+function createCard(data) {
+  var card = document.querySelector('template').content.querySelector('.js-my-card').cloneNode(true);
+  var titleContent = card.querySelector('.card-title');
+  var cardContent = card.querySelector('.card-text');
+
+  try {
+    titleContent.innerHTML = data.title;
+    cardContent.innerHTML = data.body;
+    return card;
+  } catch (_unused) {
+    viewMoreButton.setAttribute('disabled', 'disabled'); // if(data.title === undefined) {
+    //   titleContent.innerHTML = '';
+    //   cardContent.innerHTML = '';
+    // }                                   
+    // Вариант где последние 4 карты не покажутся, зато не будет underfined текста
+  }
 }
 
-function addElement() {
+function addElements(data, count) {
   var fragment = new DocumentFragment();
-  fragment.append(createCard().content.cloneNode(true));
+
+  for (var i = rememberCount; i < counter; i++) {
+    fragment.append(createCard(data[i]));
+  }
+
   layoutRow.append(fragment);
-} //Template add
+  rememberCount += count;
+  counter += count;
+  console.log(rememberCount);
+  console.log(counter);
+} //Event Listener on button
 
 
-addElement();
-addElement();
-addElement();
-addElement();
-addElement();
-addElement();
-var titleContent = document.querySelectorAll('.card-title');
-var subTutleContent = document.querySelectorAll('.card-subtitle');
-var cardContent = document.querySelectorAll('.card-text');
+viewMoreButton.addEventListener('click', function () {
+  return sendGetRequest(requestURL).then(function (data) {
+    addElements(data, 6);
+  });
+});
 //# sourceMappingURL=index.js.map

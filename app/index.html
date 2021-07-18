@@ -6,25 +6,28 @@
   <title>Fetch Training</title>
   <link rel="stylesheet" href="css/vendors.css">
   <link rel="stylesheet" href="css/style.css">
-  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous"> -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 </head>
 <body>
   <main class="main-content">
     <h1 class="main-content__page-title">Fetch запросы</h1>
     <div class="main-content__content-wrapper container">
       <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 gy-5">
-        <template class="card-template">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title para1"></h5>
-              <h6 class="card-subtitle mb-2 text-muted"></h6>
-              <p class="card-text"></p>
-            </div>
-          </div>
-        </template>
       </div>
+      <button type="button" class="btn btn-secondary">Показать еще</button>
     </div>
   </main>
+  <template class="card-template">
+    <div class="col js-my-card">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title para1"></h5>
+          <p class="card-text"></p>
+        </div>
+      </div>
+    </div>
+    <div class="js-any-template"></div>
+  </template>
   <script src="js/vendors.js"></script>
   <script src="js/index.js"></script>
 </body>

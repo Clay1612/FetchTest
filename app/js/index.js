@@ -1,19 +1,14 @@
 'use strict'
 
 //Request URL
-const requestURL = 'https://jsonplaceholder.typicode.com/comments';
+const requestURL = 'https://jsonplaceholder.typicode.com/posts';
 
-let body = {
-  title: 'Lorem ipsum dolor sit amet',
-  subtitle: 'qwertyui@gmail.com',
-  text: 'consectetur adipisicing elit',
-}
-
-//Template variables
-let cardTemplate = document.querySelector('.card-template');
+//Variables
 let layoutRow = document.querySelector('.row');
+let viewMoreButton = document.querySelector('.btn-secondary');
+let rememberCount = 0;
+let counter = 6;
 
-// RequestFunction
 //GET
 function sendGetRequest(url) {
   return fetch(url)
@@ -22,64 +17,53 @@ function sendGetRequest(url) {
     })
 }
 
-//Post
-function sendPostRequest(method, url, body = null) {
-  let headers = {
-    'Content-Type': 'application/json',
-  }
-
-  return fetch(url, {
-    method: method,
-    body: JSON.stringify(body),
-    headers: headers
-  })
-  .then(response => {
-    return response.json()
-  })
-}
-
 //Requests
 //GET
+
 sendGetRequest(requestURL)
   .then(data => {
-    for(let i of titleContent) {
-      i.innerHTML = data[0].name;  //** FIX ME */
-    }
-
-    for(let i of subTutleContent) {
-      i.innerHTML = data[0].email; //** FIX ME */
-    }
-
-    for(let i of cardContent) {
-      i.innerHTML = data[0].body; //** FIX ME */
-    }
+    addElements(data, 6)
   })
 
-//POST
-sendPostRequest('POST', requestURL, body)
-  .then(data => console.log(data));
-
-
 //Template functions
-function createCard() {
-  return cardTemplate;     //Эта функция особо то и не нужна, не до конца видимо понял твою задумку, обсудим.
+function createCard(data) {
+  const card = document.querySelector('template').content.querySelector('.js-my-card').cloneNode(true);
+  const titleContent = card.querySelector('.card-title');
+  const cardContent = card.querySelector('.card-text');
+  try {
+    titleContent.innerHTML = data.title;
+    cardContent.innerHTML = data.body;
+
+    return card;
+  }
+  catch {
+    viewMoreButton.setAttribute('disabled', 'disabled');
+    // if(data.title === undefined) {
+    //   titleContent.innerHTML = '';
+    //   cardContent.innerHTML = '';
+    // }                                   
+    // Вариант где последние 4 карты не покажутся, зато не будет underfined текста
+  }
 }
 
-function addElement() {
+function addElements(data, count) {
   let fragment = new DocumentFragment();
-  fragment.append(createCard().content.cloneNode(true));
+
+  for (let i = rememberCount; i < counter; i++) {
+    fragment.append(createCard(data[i]));
+  }
+
   layoutRow.append(fragment);
+
+  rememberCount += count;
+  counter +=count;
+
+  console.log(rememberCount);
+  console.log(counter);
 }
 
-
-//Template add
-addElement();
-addElement();
-addElement();
-addElement();
-addElement();
-addElement();
-
-let titleContent = document.querySelectorAll('.card-title');
-let subTutleContent = document.querySelectorAll('.card-subtitle');
-let cardContent = document.querySelectorAll('.card-text');
+//Event Listener on button
+viewMoreButton.addEventListener('click', () => sendGetRequest(requestURL)
+.then(data => {
+  addElements(data, 6)
+}));
