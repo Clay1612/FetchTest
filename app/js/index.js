@@ -57,9 +57,6 @@ function addElements(data, count) {
 
   rememberCount += count;
   counter +=count;
-
-  console.log(rememberCount);
-  console.log(counter);
 }
 
 //Event Listener on button

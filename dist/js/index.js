@@ -47,8 +47,6 @@ function addElements(data, count) {
   layoutRow.append(fragment);
   rememberCount += count;
   counter += count;
-  console.log(rememberCount);
-  console.log(counter);
 } //Event Listener on button
 
 
