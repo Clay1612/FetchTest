@@ -51,8 +51,8 @@ function addElements(data, count) {
 
 
 viewMoreButton.addEventListener('click', function () {
-  return sendGetRequest(requestURL).then(function (data) {
+  sendGetRequest(requestURL).then(function (data) {
     addElements(data, 6);
   });
-}); //Modal
+});
 //# sourceMappingURL=index.js.map

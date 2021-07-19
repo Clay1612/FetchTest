@@ -39,6 +39,7 @@ function scripts () {
 function vendors() {
   return gulp.src([
     'node_modules/swiper/js/swiper.js',
+    'node_modules/bootstrap/dist/js/bootstrap.js'
   ]).pipe($.concat('vendors.js'))
   .pipe($.uglify())
   .pipe(gulp.dest('dist/js'))

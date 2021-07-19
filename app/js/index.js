@@ -60,9 +60,9 @@ function addElements(data, count) {
 }
 
 //Event Listener on button
-viewMoreButton.addEventListener('click', () => sendGetRequest(requestURL)
-.then(data => {
-  addElements(data, 6)
-}));
-
-//Modal
+viewMoreButton.addEventListener('click', () => {
+  sendGetRequest(requestURL)
+  .then(data => {
+    addElements(data, 6)
+  })
+});
