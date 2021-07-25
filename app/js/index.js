@@ -63,33 +63,36 @@ function createCard(data) {
   const card = document.querySelector('template').content.querySelector('.js-my-card').cloneNode(true);
   const titleContent = card.querySelector('.card-title');
   const cardContent = card.querySelector('.card-text');
-  try {
-    titleContent.innerHTML = data.title;
-    cardContent.innerHTML = data.body;
 
-    return card;
-  }
-  catch {
-    viewMoreButton.setAttribute('disabled', 'disabled');
-    // if(data.title === undefined) {
-    //   titleContent.innerHTML = '';
-    //   cardContent.innerHTML = '';
-    // }                                   
-    // Вариант где последние 4 карты не покажутся, зато не будет underfined текста
-  }
+  titleContent.innerHTML = data.title;
+  cardContent.innerHTML = data.body;
+
+  return card;
 }
 
 function addElements(data, count) {
+  let array = data;
   let fragment = new DocumentFragment();
 
-  for (let i = rememberCount; i < counter; i++) {
-    fragment.append(createCard(data[i]));
+  if(array.length > counter) {
+    for (let i = rememberCount; i < counter; i++) {
+      fragment.append(createCard(data[i]));
+    }
+  
+    layoutRow.append(fragment);
+  
+    rememberCount += count;
+    counter +=count;
+
+  } else {
+    let lastPartOfArray = array.slice(rememberCount , array.length)
+    for (let i = lastPartOfArray[0].id; i < array.length; i++) {       //** FIX ME */ // Последний элемент массива не показывает, <= не помогает
+      fragment.append(createCard(data[i]));
+    }
+  
+    layoutRow.append(fragment);
+    viewMoreButton.setAttribute('disabled', 'disabled');
   }
-
-  layoutRow.append(fragment);
-
-  rememberCount += count;
-  counter +=count;
 }
 
 //Event Listener on button View More
