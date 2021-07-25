@@ -5,19 +5,21 @@ var requestURL = 'https://jsonplaceholder.typicode.com/posts'; //Variables
 var layoutRow = document.querySelector('.row');
 var viewMoreButton = document.querySelector('.btn-secondary');
 var rememberCount = 0;
-var counter = 6; //GET
-
-function sendGetRequest(url) {
-  return fetch(url).then(function (response) {
-    return response.json();
-  });
-} //Requests
-//GET
-
-
-sendGetRequest(requestURL).then(function (data) {
-  addElements(data, 6);
-}); //Template functions
+var counter = 6;
+var abs; //GET
+// function sendGetRequest(url) {
+//   return fetch(url)
+//     .then(response => {
+//       return response.json()
+//     })
+// }
+// //Requests
+// //GET
+// sendGetRequest(requestURL)
+//   .then(data => {
+//     addElements(data, 6)
+//   })
+//Template functions
 
 function createCard(data) {
   var card = document.querySelector('template').content.querySelector('.js-my-card').cloneNode(true);
@@ -54,5 +56,17 @@ viewMoreButton.addEventListener('click', function () {
   sendGetRequest(requestURL).then(function (data) {
     addElements(data, 6);
   });
+});
+
+function sendGetRequest(url) {
+  return fetch(url).then(function (response) {
+    return response.json();
+  });
+} //Requests
+//GET
+
+
+sendGetRequest(requestURL).then(function (data) {
+  addElements(data, 6);
 });
 //# sourceMappingURL=index.js.map

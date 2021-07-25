@@ -8,22 +8,22 @@ let layoutRow = document.querySelector('.row');
 let viewMoreButton = document.querySelector('.btn-secondary');
 let rememberCount = 0;
 let counter = 6;
+let abs;
 
 //GET
-function sendGetRequest(url) {
-  return fetch(url)
-    .then(response => {
-      return response.json()
-    })
-}
+// function sendGetRequest(url) {
+//   return fetch(url)
+//     .then(response => {
+//       return response.json()
+//     })
+// }
 
-//Requests
-//GET
-
-sendGetRequest(requestURL)
-  .then(data => {
-    addElements(data, 6)
-  })
+// //Requests
+// //GET
+// sendGetRequest(requestURL)
+//   .then(data => {
+//     addElements(data, 6)
+//   })
 
 //Template functions
 function createCard(data) {
@@ -66,3 +66,17 @@ viewMoreButton.addEventListener('click', () => {
     addElements(data, 6)
   })
 });
+
+function sendGetRequest(url) {
+  return fetch(url)
+    .then(response => {
+      return response.json()
+    })
+}
+
+//Requests
+//GET
+sendGetRequest(requestURL)
+  .then(data => {
+    addElements(data, 6)
+  })
