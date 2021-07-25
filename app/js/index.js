@@ -8,22 +8,55 @@ let layoutRow = document.querySelector('.row');
 let viewMoreButton = document.querySelector('.btn-secondary');
 let rememberCount = 0;
 let counter = 6;
-let abs;
+let postTitleInput = document.getElementById('recipient-name');
+let postTextInput = document.getElementById('message-text');
+let addPostButton = document.getElementById('addPostButton');
 
+//FETCH Functions
 //GET
-// function sendGetRequest(url) {
-//   return fetch(url)
-//     .then(response => {
-//       return response.json()
-//     })
-// }
+function sendGetRequest(url) {
+  return fetch(url)
+    .then(response => {
+      return response.json()
+    })
+}
 
-// //Requests
-// //GET
-// sendGetRequest(requestURL)
-//   .then(data => {
-//     addElements(data, 6)
-//   })
+//Post
+function sendPostRequest(method, url, body = null) {
+  const headers = {
+    'Content-Type': 'application/json'
+  }
+
+  return fetch(url, {
+    method : method,
+    body: JSON.stringify(body),
+    headers: headers
+  }).then(response => {
+    return response.json()
+  })
+}
+
+//Requests
+//GET
+sendGetRequest(requestURL)
+  .then(data => {
+    addElements(data, 6)
+  })
+
+//Post
+function addNewPost() {
+  const postBody = {
+    title: postTitleInput.value,
+    body: postTextInput.value,
+  }
+
+  sendPostRequest('POST', requestURL, postBody)
+  .then(data => {
+    console.log(data)
+  })  
+}
+
+addPostButton.addEventListener('click', addNewPost);
 
 //Template functions
 function createCard(data) {
@@ -59,24 +92,10 @@ function addElements(data, count) {
   counter +=count;
 }
 
-//Event Listener on button
+//Event Listener on button View More
 viewMoreButton.addEventListener('click', () => {
   sendGetRequest(requestURL)
   .then(data => {
     addElements(data, 6)
   })
 });
-
-function sendGetRequest(url) {
-  return fetch(url)
-    .then(response => {
-      return response.json()
-    })
-}
-
-//Requests
-//GET
-sendGetRequest(requestURL)
-  .then(data => {
-    addElements(data, 6)
-  })
